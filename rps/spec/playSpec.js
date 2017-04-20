@@ -1,14 +1,14 @@
-function RPS(){
-    this.play = function(p1, p2, ui){
-        new PlayUseCase(p1, p2, ui).execute()
+function UseCases(){
+    this.play = function(p1Throw, p2Throw, ui){
+        new PlayUseCase(p1Throw, p2Throw, ui).execute()
     }
 }
 
-function PlayUseCase(p1, p2, ui){
+function PlayUseCase(p1Throw, p2Throw, ui){
     this.execute = function(){
         if (tie()) {
             ui.tie()
-        } else if (inputInvalid()){
+        } else if (invalidThrow()){
             ui.invalid()
         } else if (p1Wins()){
             ui.winner("p1")
@@ -20,25 +20,25 @@ function PlayUseCase(p1, p2, ui){
     const VALID_THROWS = ["rock", "paper", "scissors"]
 
     function tie() {
-        return p1 === p2
+        return p1Throw === p2Throw
     }
 
-    function inputInvalid() {
-        return !VALID_THROWS.includes(p1) || !VALID_THROWS.includes(p2)
+    function invalidThrow() {
+        return !VALID_THROWS.includes(p1Throw) || !VALID_THROWS.includes(p2Throw)
     }
 
     function p1Wins() {
-        return p1 === "paper" && p2 === "rock" ||
-            p1 === "rock" && p2 === "scissors" ||
-            p1 === "scissors" && p2 === "paper"
+        return p1Throw === "paper" && p2Throw === "rock" ||
+            p1Throw === "rock" && p2Throw === "scissors" ||
+            p1Throw === "scissors" && p2Throw === "paper"
     }
 }
 
 describe("play", function () {
-    let ui, rps
+    let ui, useCases
 
     beforeEach(function () {
-        rps = new RPS()
+        useCases = new UseCases()
     })
 
     describe("win scenarios", function () {
@@ -47,37 +47,37 @@ describe("play", function () {
         })
 
         it("rock versus paper", function () {
-            rps.play("rock", "paper", ui)
+            useCases.play("rock", "paper", ui)
 
             expect(ui.winner).toHaveBeenCalledWith("p2")
         })
 
         it("paper versus rock", function () {
-            rps.play("paper", "rock", ui)
+            useCases.play("paper", "rock", ui)
 
             expect(ui.winner).toHaveBeenCalledWith("p1")
         })
 
         it("rock versus scissors", function () {
-            rps.play("rock", "scissors", ui)
+            useCases.play("rock", "scissors", ui)
 
             expect(ui.winner).toHaveBeenCalledWith("p1")
         })
 
         it("scissors versus rock", function () {
-            rps.play("scissors", "rock", ui)
+            useCases.play("scissors", "rock", ui)
 
             expect(ui.winner).toHaveBeenCalledWith("p2")
         })
 
         it("scissors versus paper", function () {
-            rps.play("scissors", "paper", ui)
+            useCases.play("scissors", "paper", ui)
 
             expect(ui.winner).toHaveBeenCalledWith("p1")
         })
 
         it("paper versus scissors", function () {
-            rps.play("paper", "scissors", ui)
+            useCases.play("paper", "scissors", ui)
 
             expect(ui.winner).toHaveBeenCalledWith("p2")
         })
@@ -90,19 +90,19 @@ describe("play", function () {
         })
 
         it("rock versus rock", function () {
-            rps.play("rock", "rock", ui)
+            useCases.play("rock", "rock", ui)
 
             expect(ui.tie).toHaveBeenCalled()
         })
 
         it("paper versus paper", function () {
-            rps.play("paper", "paper", ui)
+            useCases.play("paper", "paper", ui)
 
             expect(ui.tie).toHaveBeenCalled()
         })
 
         it("scissors versus scissors", function () {
-            rps.play("scissors", "scissors", ui)
+            useCases.play("scissors", "scissors", ui)
 
             expect(ui.tie).toHaveBeenCalled()
         })
@@ -117,13 +117,13 @@ describe("play", function () {
         })
 
         it("rock v. [^(rock|paper|scissors)]", function () {
-            rps.play("rock", invalidThrow, ui)
+            useCases.play("rock", invalidThrow, ui)
 
             expect(ui.invalid).toHaveBeenCalled()
         })
 
         it("[^(rock|paper|scissors)] v. rock", function () {
-            rps.play(invalidThrow, "rock", ui)
+            useCases.play(invalidThrow, "rock", ui)
 
             expect(ui.invalid).toHaveBeenCalled()
         })

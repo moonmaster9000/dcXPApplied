@@ -1,10 +1,11 @@
 const { UseCases } = require("../src/rps.js")
+const FakeRoundRepo = require("./FakeRoundRepo")
 
 describe("play", function () {
     let ui, useCases
 
     beforeEach(function () {
-        useCases = new UseCases()
+        useCases = new UseCases(new FakeRoundRepo())
     })
 
     describe("win scenarios", function () {
@@ -13,37 +14,37 @@ describe("play", function () {
         })
 
         it("rock versus paper", function () {
-            useCases.play("rock", "paper", ui)
+            play("rock", "paper")
 
             expect(ui.winner).toHaveBeenCalledWith("p2")
         })
 
         it("paper versus rock", function () {
-            useCases.play("paper", "rock", ui)
+            play("paper", "rock")
 
             expect(ui.winner).toHaveBeenCalledWith("p1")
         })
 
         it("rock versus scissors", function () {
-            useCases.play("rock", "scissors", ui)
+            play("rock", "scissors")
 
             expect(ui.winner).toHaveBeenCalledWith("p1")
         })
 
         it("scissors versus rock", function () {
-            useCases.play("scissors", "rock", ui)
+            play("scissors", "rock")
 
             expect(ui.winner).toHaveBeenCalledWith("p2")
         })
 
         it("scissors versus paper", function () {
-            useCases.play("scissors", "paper", ui)
+            play("scissors", "paper")
 
             expect(ui.winner).toHaveBeenCalledWith("p1")
         })
 
         it("paper versus scissors", function () {
-            useCases.play("paper", "scissors", ui)
+            play("paper", "scissors")
 
             expect(ui.winner).toHaveBeenCalledWith("p2")
         })
@@ -56,19 +57,19 @@ describe("play", function () {
         })
 
         it("rock versus rock", function () {
-            useCases.play("rock", "rock", ui)
+            play("rock", "rock")
 
             expect(ui.tie).toHaveBeenCalled()
         })
 
         it("paper versus paper", function () {
-            useCases.play("paper", "paper", ui)
+            play("paper", "paper")
 
             expect(ui.tie).toHaveBeenCalled()
         })
 
         it("scissors versus scissors", function () {
-            useCases.play("scissors", "scissors", ui)
+            play("scissors", "scissors")
 
             expect(ui.tie).toHaveBeenCalled()
         })
@@ -83,17 +84,19 @@ describe("play", function () {
         })
 
         it("rock v. [^(rock|paper|scissors)]", function () {
-            useCases.play("rock", invalidThrow, ui)
+            play("rock", invalidThrow)
 
             expect(ui.invalid).toHaveBeenCalled()
         })
 
         it("[^(rock|paper|scissors)] v. rock", function () {
-            useCases.play(invalidThrow, "rock", ui)
+            play(invalidThrow, "rock")
 
             expect(ui.invalid).toHaveBeenCalled()
         })
     })
 
-
+    function play(p1Throw, p2Throw){
+        useCases.play(p1Throw, p2Throw, ui)
+    }
 })

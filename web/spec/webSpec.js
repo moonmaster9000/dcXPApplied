@@ -3,7 +3,7 @@ const ReactDOM = require("react-dom")
 const {Round} = require('rps')
 const PlayForm = require("../PlayForm")
 
-describe("play form", function () {
+describe("Play Form Page", function () {
     describe("play use case reports invalid", function () {
         beforeEach(function () {
             renderApp({
@@ -116,13 +116,14 @@ describe("play form", function () {
             })
         })
 
-        it("displays NO ROUNDS", function () {
+        it("displays the rounds", function () {
             expect(page()).not.toContain("NO ROUNDS")
 
             assertPageContainsRound(round1)
             assertPageContainsRound(round2)
         })
     })
+
     let domFixture
 
 

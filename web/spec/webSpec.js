@@ -31,7 +31,7 @@ describe("Play Form Page", function () {
             })
         })
 
-        it("tells the user the input was invalid", function () {
+        it("tells the user the input was a TIE", function () {
             expect(page()).not.toContain("TIE")
 
             submitPlayForm()
@@ -49,7 +49,7 @@ describe("Play Form Page", function () {
             })
         })
 
-        it("tells the user the input was invalid", function () {
+        it("tells the user the input a p1 Wins! scenario", function () {
             expect(page()).not.toContain("p1 Wins!")
 
             submitPlayForm()
@@ -67,7 +67,7 @@ describe("Play Form Page", function () {
             })
         })
 
-        it("tells the user the input was invalid", function () {
+        it("tells the user the input was a p2 Wins! scenario", function () {
             expect(page()).not.toContain("p2 Wins!")
 
             submitPlayForm()

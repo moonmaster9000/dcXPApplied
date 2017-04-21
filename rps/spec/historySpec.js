@@ -21,15 +21,22 @@ describe("history", function () {
 
     describe("rounds have been played", function () {
         it("sends the rounds to the UI", function () {
-            const playUI = jasmine.createSpyObj("playUI", ["invalid"])
+            const playUI = jasmine.createSpyObj("playUI", ["invalid", "tie", "winner"])
             const historyUI = jasmine.createSpyObj("historyUI", ["rounds"])
 
             useCases.play("rock", "sailboat", playUI)
+            useCases.play("rock", "rock", playUI)
+            useCases.play("paper", "rock", playUI)
+            useCases.play("rock", "paper", playUI)
+
             useCases.history(historyUI)
 
             expect(historyUI.rounds).toHaveBeenCalledWith(
                 [
-                    new Round("rock", "sailboat", "invalid")
+                    new Round("rock", "sailboat", "invalid"),
+                    new Round("rock", "rock", "tie"),
+                    new Round("paper", "rock", "p1"),
+                    new Round("rock", "paper", "p2"),
                 ]
             )
         })

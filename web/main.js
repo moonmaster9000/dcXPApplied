@@ -1,11 +1,16 @@
 const React = require('react')
 const ReactDOM = require('react-dom')
 const PlayForm = require('./src/components/PlayForm')
-const { UseCases, FakeRoundRepo } = require("rps")
+const { Round, UseCases, FakeRoundRepo } = require("rps")
 
 
+let repo = new FakeRoundRepo()
+
+repo.save(new Round("foo", "bar", "invalid"))
+repo.save(new Round("foo", "bar", "invalid"))
+repo.save(new Round("foo", "bar", "invalid"))
 
 ReactDOM.render(
-    <PlayForm useCases={new UseCases(new FakeRoundRepo())}/>,
+    <PlayForm useCases={new UseCases(repo)}/>,
     document.querySelector("#react-app")
 )

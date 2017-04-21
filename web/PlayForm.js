@@ -10,56 +10,24 @@ class PlayForm extends React.Component{
         this.inputChanged = this.inputChanged.bind(this)
     }
 
-    componentDidMount(){
-        this.props.useCases.history(this)
-    }
-
     buttonHandler(){
         this.props.useCases.play(this.state.p1Throw, this.state.p2Throw, this)
     }
 
     invalid(){
         this.setState({message: "INVALID"})
-        this.props.useCases.history(this)
     }
 
     tie(){
         this.setState({message: "TIE"})
-        this.props.useCases.history(this)
     }
 
     winner(player){
         this.setState({message: `${player} Wins!`})
-        this.props.useCases.history(this)
     }
 
     inputChanged(e){
         this.setState({[e.target.name]: e.target.value})
-    }
-
-    noRounds(){
-        this.setState({roundDisplay: "NO ROUNDS"})
-    }
-
-    rounds(rs) {
-        this.setState({
-            roundDisplay: <table>
-                <thead>
-                    <tr>
-                        <th>p1</th>
-                        <th>p2</th>
-                        <th>result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rs.map((r, i) => <tr key={i}>
-                        <td>{r.p1Throw}</td>
-                        <td>{r.p2Throw}</td>
-                        <td>{r.result}</td>
-                    </tr>)}
-                </tbody>
-            </table>
-        })
     }
 
     render(){
@@ -76,6 +44,51 @@ class PlayForm extends React.Component{
             <div>
                 <button type="button" onClick={this.buttonHandler}>Play</button>
             </div>
+
+            <History useCases={this.props.useCases}/>
+        </div>
+    }
+}
+
+class History extends React.Component {
+    constructor() {
+        super()
+
+        this.state = {}
+
+    }
+
+    componentDidMount(){
+        this.props.useCases.history(this)
+    }
+
+    noRounds(){
+        this.setState({roundDisplay: "NO ROUNDS"})
+    }
+
+    rounds(rs) {
+        this.setState({
+            roundDisplay: <table>
+                <thead>
+                <tr>
+                    <th>p1</th>
+                    <th>p2</th>
+                    <th>result</th>
+                </tr>
+                </thead>
+                <tbody>
+                {rs.map((r, i) => <tr key={i}>
+                    <td>{r.p1Throw}</td>
+                    <td>{r.p2Throw}</td>
+                    <td>{r.result}</td>
+                </tr>)}
+                </tbody>
+            </table>
+        })
+    }
+
+    render(){
+        return <div>
             {this.state.roundDisplay}
         </div>
     }

@@ -1,46 +1,7 @@
 const React = require("react")
 const ReactDOM = require("react-dom")
-
-
-class PlayForm extends React.Component{
-    constructor(){
-        super()
-
-        this.state = {}
-        
-        this.buttonHandler = this.buttonHandler.bind(this)
-        this.inputChanged = this.inputChanged.bind(this)
-    }
-
-    buttonHandler(){
-        this.props.useCases.play(this.state.p1Throw, this.state.p2Throw, this)
-    }
-
-    invalid(){
-        this.setState({message: "INVALID"})
-    }
-
-    tie(){
-        this.setState({message: "TIE"})
-    }
-
-    winner(player){
-        this.setState({message: `${player} Wins!`})
-    }
-
-    inputChanged(e){
-        this.setState({[e.target.name]: e.target.value})
-    }
-
-    render(){
-        return <div>
-                {this.state.message}
-                <input type="text" name="p1Throw" onChange={this.inputChanged}></input>
-                <input type="text" name="p2Throw" onChange={this.inputChanged}></input>
-                <button type="button" onClick={this.buttonHandler}/>
-            </div>
-    }
-}
+const {Round} = require('rps')
+const PlayForm = require("../PlayForm")
 
 describe("play form", function () {
     describe("play use case reports invalid", function () {
@@ -127,8 +88,43 @@ describe("play form", function () {
         expect(play).toHaveBeenCalledWith("rock", "paper", jasmine.any(Object))
     })
 
+    describe("history use case reports no rounds", function () {
+        beforeEach(function () {
+            renderApp({
+                history: function(ui){
+                    ui.noRounds()
+                }
+            })
+        })
 
+        it("displays NO ROUNDS", function () {
+            expect(page()).toContain("NO ROUNDS")
+        })
+    })
+
+    describe("history use case reports rounds", function () {
+        let round1, round2
+
+        beforeEach(function () {
+            round1 = new Round("round1 p1 throw", "round1 p2 throw", "round1 result")
+            round2 = new Round("round2 p1 throw", "round2 p2 throw", "round2 result")
+
+            renderApp({
+                history: function(ui){
+                    ui.rounds([round1, round2])
+                }
+            })
+        })
+
+        it("displays NO ROUNDS", function () {
+            expect(page()).not.toContain("NO ROUNDS")
+
+            assertPageContainsRound(round1)
+            assertPageContainsRound(round2)
+        })
+    })
     let domFixture
+
 
     function setupDOM() {
         domFixture = document.createElement("div")
@@ -137,6 +133,8 @@ describe("play form", function () {
     }
 
     function renderApp(useCases) {
+        useCases.history = useCases.history || function(){}
+
         ReactDOM.render(
             <PlayForm useCases={useCases}/>,
             domFixture
@@ -156,6 +154,14 @@ describe("play form", function () {
         fillIn("p2Throw", p2Throw)
 
         document.querySelector("button").click()
+    }
+
+    function assertPageContainsRound(r) {
+        let pageContents = page()
+
+        expect(pageContents).toContain(r.p1Throw)
+        expect(pageContents).toContain(r.p2Throw)
+        expect(pageContents).toContain(r.result)
     }
 
     function fillIn(inputName, p1Throw) {

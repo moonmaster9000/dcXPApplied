@@ -14,6 +14,7 @@
     "babel-preset-react": "latest"
   },
   "scripts": {
+    "compile": "watchify main.js -o bundled/compiledMain.js -t [ babelify --presets [ es2015 react ] ]",
     "compile-test": "watchify spec/webSpec.js -o bundled/compiledSpecs.js -t [ babelify --presets [ es2015 react ] ]"
   }
 }

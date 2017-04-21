@@ -1,4 +1,5 @@
 const Round = require("./Round")
+const FakeRoundRepo = require("./FakeRoundRepo")
 
 function UseCases(roundRepo){
     this.play = function(p1Throw, p2Throw, ui){
@@ -65,5 +66,7 @@ function PlayUseCase(p1Throw, p2Throw, ui, roundRepo){
 }
 
 module.exports = {
-    UseCases
+    UseCases,
+    Round,
+    FakeRoundRepo
 }

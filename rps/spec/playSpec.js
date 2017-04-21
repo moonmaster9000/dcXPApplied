@@ -1,5 +1,5 @@
 const { UseCases } = require("../src/rps.js")
-const FakeRoundRepo = require("./FakeRoundRepo")
+const FakeRoundRepo = require("./../src/FakeRoundRepo")
 
 describe("play", function () {
     let ui, useCases

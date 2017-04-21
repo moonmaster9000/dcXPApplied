@@ -1,6 +1,6 @@
 const {UseCases} = require("../src/rps")
 const Round = require("../src/Round")
-const FakeRoundRepo = require("./FakeRoundRepo")
+const FakeRoundRepo = require("./../src/FakeRoundRepo")
 
 describe("history", function () {
     let useCases

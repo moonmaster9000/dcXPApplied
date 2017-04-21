@@ -1,6 +1,6 @@
 const React = require('react')
 const ReactDOM = require('react-dom')
-const PlayForm = require('./PlayForm')
+const PlayForm = require('./src/components/PlayForm')
 const { UseCases, FakeRoundRepo } = require("rps")
 
 

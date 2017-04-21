@@ -1,7 +1,7 @@
 const React = require("react")
 const ReactDOM = require("react-dom")
 const {Round} = require('rps')
-const PlayForm = require("../PlayForm")
+const PlayForm = require("../src/components/PlayForm")
 
 describe("Play Form Page", function () {
     describe("play use case reports invalid", function () {
